@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
-
+import Conditions from '../Conditions/Conditions';
 
 //Forcast function component
 
@@ -37,9 +37,12 @@ const Forecast = () => {
    <div>
        <h2>Current Weather Forecast Conditions</h2>
        <div>
-           <p>What is weather like today</p>
-            {JSON.stringify(responseObj)}
+           <h3>What is weather like today</h3>
+            <p>{JSON.stringify(responseObj)}</p>
             <button onClick = {GetForecast}>Click to get forecast</button>
+            <Conditions
+               responseObj={responseObj}
+            />
        </div>
    </div>
   )
