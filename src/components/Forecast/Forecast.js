@@ -6,17 +6,24 @@ import Conditions from '../Conditions/Conditions';
 
 const Forecast = () => {
 
-    let [responseObj, setResponseObj] = useState({});
+     //useState -built in hook that allows function component to use state 
+      //Using the useState hook inside a function component, you can create a piece of state without switching to class components.
+      
+    let [city, setCity] = useState(''); //user input for city
+    let [unit, setUnit] = useState('imperial'); //user input for unit type
+    const uriEncodedCity = encodeURIComponent(city); //encode city for uri
+
+    let [responseObj, setResponseObj] = useState({}); //weather api fetch response
+
 
     // getForcast function
-   function GetForecast() {
       
-      //useState -built in hook that allows function component to use state 
-      //Using the useState hook inside a function component, you can create a piece of state without switching to class components.
-       
+     
+      function getForecast(e) {
+        e.preventDefault();
 
-      //fetch wather data
-        fetch("https://community-open-weather-map.p.rapidapi.com/weather?q=Seattle", {
+      //fetch weather data with query parameters unit and city from user inputs
+        fetch(`https://community-open-weather-map.p.rapidapi.com/weather?units=${unit}&q=${uriEncodedCity}`, {
 	        "method": "GET",
 	        "headers": {
 		    "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
@@ -39,7 +46,36 @@ const Forecast = () => {
        <div>
            <h3>What is weather like today</h3>
             <p>{JSON.stringify(responseObj)}</p>
-            <button onClick = {GetForecast}>Click to get forecast</button>
+            <form onSubmit={getForecast}>
+                <input
+                    type="text"
+                    placeholder="Enter City"
+                    maxLength="50"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    />
+                <label>
+                    <input
+                        type="radio"
+                        name="units"
+                        checked={unit === "imperial"}
+                        value="imperial"
+                        onChange={(e) => setUnit(e.target.value)}
+                        />
+                    Fahrenheit
+                </label>
+                <label>
+                    <input
+                        type="radio"
+                        name="units"
+                        checked={unit === "metric"}
+                        value="metric"
+                        onChange={(e) => setUnit(e.target.value)}
+                        />
+                    Celcius
+                </label>
+                <button type="submit">Get Forecast</button>
+            </form>
             <Conditions
                responseObj={responseObj}
             />
