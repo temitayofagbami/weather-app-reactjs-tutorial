@@ -1,4 +1,5 @@
 import React from 'react'
+import classes from './Conditions.module.css'
 
 //Conditons function component
 
@@ -6,7 +7,7 @@ const Conditions = (props) =>{
 
     return(
 
-        <div>
+        <div className={classes.Wrapper}>
             {props.responseObj.cod === 200 ? 
             <div>
                 <p><strong>{props.responseObj.name}</strong></p>

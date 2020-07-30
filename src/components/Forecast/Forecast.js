@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import Conditions from '../Conditions/Conditions';
+import classes from './Forecast.module.css'
+
 
 //Forcast function component
 
@@ -8,7 +10,7 @@ const Forecast = () => {
 
      //useState -built in hook that allows function component to use state 
       //Using the useState hook inside a function component, you can create a piece of state without switching to class components.
-      
+
     let [city, setCity] = useState(''); //user input for city
     let [unit, setUnit] = useState('imperial'); //user input for unit type
     const uriEncodedCity = encodeURIComponent(city); //encode city for uri
@@ -44,20 +46,23 @@ const Forecast = () => {
    <div>
        <h2>Current Weather Forecast Conditions</h2>
        <div>
-           <h3>What is weather like today</h3>
-            <p>{JSON.stringify(responseObj)}</p>
+           <h3>What is weather like today?</h3>
             <form onSubmit={getForecast}>
-                <input
+               <div> 
+                   <input
                     type="text"
                     placeholder="Enter City"
                     maxLength="50"
+                    className={classes.TextInput}
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     />
+                </div>
                 <label>
                     <input
                         type="radio"
                         name="units"
+                        className={classes.Radio}
                         checked={unit === "imperial"}
                         value="imperial"
                         onChange={(e) => setUnit(e.target.value)}
@@ -68,13 +73,14 @@ const Forecast = () => {
                     <input
                         type="radio"
                         name="units"
+                        className= {classes.Radio}
                         checked={unit === "metric"}
                         value="metric"
                         onChange={(e) => setUnit(e.target.value)}
                         />
-                    Celcius
+                    Celsius
                 </label>
-                <button type="submit">Get Forecast</button>
+                <button type="submit" className= {classes.Button}>Get Forecast</button>
             </form>
             <Conditions
                responseObj={responseObj}
