@@ -8,6 +8,7 @@ const Conditions = (props) =>{
     return(
 
         <div className={classes.Wrapper}>
+          
             {props.responseObj.cod === 200 ? 
             <div>
                 <p><strong>{props.responseObj.name}</strong></p>

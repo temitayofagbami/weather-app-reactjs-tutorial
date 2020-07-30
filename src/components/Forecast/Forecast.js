@@ -11,18 +11,33 @@ const Forecast = () => {
      //useState -built in hook that allows function component to use state 
       //Using the useState hook inside a function component, you can create a piece of state without switching to class components.
 
+     //user input 
     let [city, setCity] = useState(''); //user input for city
     let [unit, setUnit] = useState('imperial'); //user input for unit type
+
     const uriEncodedCity = encodeURIComponent(city); //encode city for uri
 
-    let [responseObj, setResponseObj] = useState({}); //weather api fetch response
+   //weather api fetch response
+    let [responseObj, setResponseObj] = useState({}); 
 
+    //error handling
+    let [error, setError] = useState(false);
+    let [loading, setLoading] = useState(false);
 
     // getForcast function
-      
-     
       function getForecast(e) {
         e.preventDefault();
+
+        //check that user enters input for city
+        if (city.length === 0) {
+            return setError(true);
+        }
+
+        // Clear state in preparation for new data
+        setError(false);
+        setResponseObj({});
+  
+        setLoading(true); // data fetch initated
 
       //fetch weather data with query parameters unit and city from user inputs
         fetch(`https://community-open-weather-map.p.rapidapi.com/weather?units=${unit}&q=${uriEncodedCity}`, {
@@ -33,11 +48,17 @@ const Forecast = () => {
 	        }
         })
         .then(response => response.json())
-       .then(response => {
-           setResponseObj(response)
-       })
+        .then(response => {
+            if (response.cod !== 200) {
+                throw new Error()
+            }
+            setResponseObj(response);
+            setLoading(false); //data fetch completed
+        })
         .catch(err => {
-	        console.log(err);
+            setError(true);
+            setLoading(false);
+            console.log(err.message);
         });
       
     }
@@ -84,6 +105,8 @@ const Forecast = () => {
             </form>
             <Conditions
                responseObj={responseObj}
+               error={error}
+               loading={loading}
             />
        </div>
    </div>
